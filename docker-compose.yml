@@ -22,6 +22,8 @@ services:
       - "--providers.docker.exposedbydefault=false"
       - "--entrypoints.web.address=:80"
       - "--entrypoints.websecure.address=:443"
+      - "--entrypoints.web.http.redirections.entryPoint.to=websecure"
+      - "--entrypoints.web.http.redirections.entryPoint.scheme=https"
       - "--certificatesresolvers.myresolver.acme.tlschallenge=true"
       - "--certificatesresolvers.myresolver.acme.email=postmaster@example.com"
       - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
@@ -43,9 +45,8 @@ services:
     restart: always
     depends_on:
       - ezxssdb
-      - traefik
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.whoami.rule=Host(`example.com`)"
-      - "traefik.http.routers.whoami.entrypoints=websecure"
-      - "traefik.http.routers.whoami.tls.certresolver=myresolver"
+      - "traefik.http.routers.ezxss.rule=Host(`example.com`)"
+      - "traefik.http.routers.ezxss.entrypoints=websecure"
+      - "traefik.http.routers.ezxss.tls.certresolver=myresolver"
